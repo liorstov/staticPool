@@ -4,7 +4,7 @@ class StaticDictionary{
     int StoreWord(std::string str){
         std::string * adr = sm.Request();
 
-        // check if space available
+        // check if space available, I presume a fix in which nullptr is returned when reached insufficient space 
         if (adr != nullptr){
             *adr = str;
 
