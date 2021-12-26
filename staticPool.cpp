@@ -4,7 +4,7 @@ class StaticDictionary{
     int StoreWord(std::string str){
         std::string * adr = sm.Request();
 
-        // check if space available, I presume a fix in which nullptr is returned when reached insufficient space 
+        // check if space available
         if (adr != nullptr){
             *adr = str;
 
@@ -29,10 +29,21 @@ class StaticDictionary{
         }
     }
 
+    void releaseWord(std::string toRel){
+         for (auto  i = adrVector.begin(); i != adrVector.end(); i++)
+         {
+             // find the adress and release it
+             if(**i == toRel){
+                 sm.Return(*i);
+                 adrVector.erase(i);
+                 return;
+             }
+         }
+    } 
+    
+
     private:
     StaticMemPool<std::string,size> sm;
-    
-    //vector for addresses
     std::vector<std::string*> adrVector; 
 
 };
@@ -42,13 +53,14 @@ int main(){
     dict.StoreWord("aaa");
     dict.StoreWord("aaa");
     dict.StoreWord("aaa");
+    dict.releaseWord("aaa");
     dict.StoreWord("bb");
     dict.StoreWord("bb");
     dict.StoreWord("bbc");
     dict.ListWords();
-  
-  //print 
-  //aaa 3
-  //bb 2
-  //bbc 2
+   
+// output:
+// aaa 2
+// bb 2
+// bbc 2
 }
